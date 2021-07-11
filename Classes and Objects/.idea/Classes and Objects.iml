@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="PYTHON_MODULE" version="4">
   <component name="NewModuleRootManager">
-    <content url="file://$MODULE_DIR$" />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/ex/05_to_do_list" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ex/05_to_do_list/project" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ex/06_guild_system" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ex/06_guild_system/project" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/ex" />
+    </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
