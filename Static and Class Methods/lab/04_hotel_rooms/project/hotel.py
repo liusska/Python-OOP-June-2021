@@ -13,8 +13,9 @@ class Hotel:
 
     def take_room(self, room_number, people):
         room = [r for r in self.rooms if r.number == room_number][0]
-        self.guests += people
-        room.take_room(people)
+        result = room.take_room(people)
+        if not result:
+            self.guests += people
 
     def free_room(self, room_number):
         room = [r for r in self.rooms if r.number == room_number][0]
