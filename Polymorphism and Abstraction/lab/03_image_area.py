@@ -16,6 +16,3 @@ class ImageArea:
         return self.get_area() == other.get_area()
 
 
-)
-
-
