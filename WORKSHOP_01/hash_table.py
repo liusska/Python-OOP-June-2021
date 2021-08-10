@@ -127,22 +127,22 @@ class HashTable:
             raise KeyError('Invalid key')
 
 
-table = HashTable()
-
-table["name"] = "Pesho"
-table["age"] = 25
-
-
-print(table)
-print(table.get("name"))
-print(table["age"])
-print(len(table))
-print(table.keys())
-print(table.values())
-print(table.items())
-a = table.copy()
-a["name"] = 6
-
-print(table["name"])
-table.add("test", 5)
-print(table)
+# table = HashTable()
+#
+# table["name"] = "Pesho"
+# table["age"] = 25
+#
+#
+# print(table)
+# print(table.get("name"))
+# print(table["age"])
+# print(len(table))
+# print(table.keys())
+# print(table.values())
+# print(table.items())
+# a = table.copy()
+# a["name"] = 6
+#
+# print(table["name"])
+# table.add("test", 5)
+# print(table)
