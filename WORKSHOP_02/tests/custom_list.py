@@ -56,3 +56,64 @@ class CustomList:
 
     def copy(self):
         return deepcopy(self.__values)
+
+    def size(self):
+        return len(self.__values)
+
+    def add_first(self, value):
+        self.__values.insert(0, value)
+
+    def dictionize(self):
+        result = {}
+        for index in range(0, len(self.__values), 2):
+            if index == len(self.__values) - 1:
+                result.update({self.__values[index]: ' '})
+            else:
+                result.update({self.__values[index]: self.__values[index+1]})
+        return result
+
+    def move(self, amount):
+        if amount > len(self.__values) or amount < 0:
+            raise ValueError("Invalid amount")
+        self.__values = self.__values[amount:] + self.__values[:amount]
+
+    def sum(self):
+        result = 0
+        for el in self.__values:
+            if '__add__' not in dir(el):
+                raise ValueError("All objects must implement dunder add")
+
+            elif isinstance(el, str):
+                result += len(el)
+            elif isinstance(el, int) or isinstance(el, float):
+                result += el
+            else:
+                current = el.__add__()
+                result += current
+        return result
+
+    def overbound(self):
+        max = float("-inf")
+        index = None
+
+        for el in self.__values:
+            if isinstance(el, int) or isinstance(el, float):
+                if max < el:
+                    max = el
+                    index = self.__values.index(el)
+                    continue
+
+            if '__len__' not in dir(el):
+                raise ValueError("All objects must implement dunder len")
+
+            elif isinstance(el, str):
+                if max < len(el):
+                    max = len(el)
+                    index = self.__values.index(el)
+            else:
+                if max < el.__len__():
+                    max = el.__len__()
+                    index = self.__values.index(el)
+        return index
+
+

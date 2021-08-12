@@ -1,6 +1,7 @@
 from unittest import TestCase, main
 
 from .custom_list import CustomList
+from helpers.helper_classes import PersonWithDunders, PersonWithoutDunders
 
 
 class TestsCustomList(TestCase):
@@ -168,6 +169,91 @@ class TestsCustomList(TestCase):
         result = self.custom_list.copy()
         self.assertEqual([1, 2, 3], self.custom_list._CustomList__values)
         self.assertNotEqual(id(result), id(self.custom_list._CustomList__values))
+
+    def test_size(self):
+        self.assertEqual(3, len(self.custom_list._CustomList__values))
+        result = self.custom_list.size()
+        self.assertEqual(3, result)
+
+    def test_add_first_adds_element_to_the_beginning_of_the_list(self):
+        self.assertEqual([1, 2, 3], self.custom_list._CustomList__values)
+        self.assertEqual(1, self.custom_list._CustomList__values[0])
+        self.custom_list.add_first(100)
+        self.assertEqual([100, 1, 2, 3], self.custom_list._CustomList__values)
+        self.assertEqual(100, self.custom_list._CustomList__values[0])
+        self.assertEqual(1, self.custom_list._CustomList__values[1])
+
+    def test_dictionize_with_even_values(self):
+        cl = CustomList(1, 2, 3, 4)
+        result = cl.dictionize()
+        self.assertTrue(isinstance(result, dict))
+        self.assertEqual(({1: 2, 3: 4}), result)
+
+    def test_dictionize_with_odd_values(self):
+        result = self.custom_list.dictionize()
+        self.assertTrue(isinstance(result, dict))
+        self.assertEqual({1: 2, 3: ' '}, result)
+
+    def test_move_first_n_to_the_end(self):
+        elements = [el for el in range(1, 11)]
+        self.custom_list._CustomList__values = elements
+        self.assertEqual(elements, self.custom_list._CustomList__values)
+        self.custom_list.move(5)
+        expected = [6, 7, 8, 9, 10, 1, 2, 3, 4, 5]
+        self.assertEqual(expected, self.custom_list._CustomList__values)
+
+    def test_move_invalid_amount_raises(self):
+        elements = [el for el in range(1, 11)]
+        self.custom_list._CustomList__values = elements
+        self.assertEqual(elements, self.custom_list._CustomList__values)
+        with self.assertRaises(ValueError) as ex:
+            self.custom_list.move(11)
+        self.assertEqual("Invalid amount", str(ex.exception))
+
+        with self.assertRaises(ValueError) as ex:
+            self.custom_list.move(-11)
+        self.assertEqual("Invalid amount", str(ex.exception))
+
+    def test_sum_raises_if_object_does_implement_dunder_add(self):
+        cl = CustomList(1, "asd", PersonWithoutDunders())
+        with self.assertRaises(ValueError) as ex:
+            cl.sum()
+        self.assertEqual("All objects must implement dunder add", str(ex.exception))
+
+    def test_sum_with_strings_add_their_length_to_the_sum(self):
+        word = "hello"
+        self.assertEqual(5, len(word))
+        cl = CustomList(1, PersonWithDunders())
+        result = cl.sum()
+        self.assertEqual(6, result)
+
+    def test_sum_with_custom_object_adds(self):
+        cl = CustomList(1, PersonWithDunders())
+        result = cl.sum()
+        self.assertEqual(6, result)
+
+    def test_overbound_raises_object_does_not_implement_dunder_len(self):
+        cl = CustomList(1, "asd", PersonWithoutDunders())
+        with self.assertRaises(ValueError) as ex:
+            cl.overbound()
+        self.assertEqual("All objects must implement dunder len", str(ex.exception))
+
+    def test_overbound_with_strings_add_their_length(self):
+        word = "hello"
+        self.assertEqual(5, len(word))
+        cl = CustomList(1, word)
+        self.assertEqual(1, cl._CustomList__values.index(word))
+
+        result = cl.overbound()
+        self.assertEqual(1, result)
+
+    def test_overbound_with_custom_object(self):
+        word = "hello"
+        self.assertEqual(5, len(word))
+        cl = CustomList(1, word, PersonWithDunders())
+        self.assertEqual(1, cl._CustomList__values.index(word))
+        result = cl.overbound()
+        self.assertEqual(2, result)
 
 
 if __name__ == '__main__':
